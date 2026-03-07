@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Save, Bot, Gamepad2, Mountain, AlertTriangle, FileText, ShieldAlert } from "lucide-react";
+import { Save, Bot, Gamepad2, AlertTriangle, FileText, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -239,26 +239,6 @@ const ScoutMatch = () => {
               <ToggleControl label={t("scout.effectiveOverBumps")} value={matchData.effectiveOverBumps} onChange={(v) => updateField("effectiveOverBumps", v)} />
               <ToggleControl label={t("scout.usedTrenchWell")} value={matchData.usedTrenchWell} onChange={(v) => updateField("usedTrenchWell", v)} />
             </div>
-          </div>
-        </section>
-
-        <section className="mb-6">
-          <div className="section-header">
-            <Mountain className="w-4 h-4 text-primary" />
-            <span>{t("scout.endgame")}</span>
-          </div>
-          <div className="card-data p-4 space-y-4">
-            <SegmentedControl
-              label={t("scout.climbResult")}
-              value={matchData.climbResult}
-              options={[
-                { value: "none", label: t("scout.climbNone") },
-                { value: "low", label: t("scout.climbLow") },
-                { value: "mid", label: t("scout.climbMid") },
-                { value: "high", label: t("scout.climbHigh") },
-              ]}
-              onChange={(v) => updateField("climbResult", v)}
-            />
           </div>
         </section>
 

@@ -166,7 +166,7 @@ This Agreement and the Application may be updated at any time. Continued use con
 11. Contact
 
 Team: 11010 Bobcats
-Email: scouting@team11010.com`,
+Email: hasalrobotics@gmail.com`,
 
     // Scout Match
     "scout.title": "Match Scouting",
@@ -469,7 +469,7 @@ Bu Sözleşme ve Uygulama herhangi bir zamanda güncellenebilir. Kullanıma deva
 11. İletişim
 
 Takım: 11010 Bobcats
-E-posta: scouting@team11010.com`,
+E-posta: hasalrobotics@gmail.com`,
 
     // Scout Match
     "scout.title": "Maç Scouting",

@@ -201,7 +201,7 @@ const SignIn = () => {
 
       <p className="mt-6 text-sm text-muted-foreground text-center max-w-sm">
         {t("signIn.contact")}{" "}
-        <a href="mailto:scouting@team11010.com" className="text-primary hover:underline font-medium">
+        <a href="mailto:hasalrobotics@gmail.com" className="text-primary hover:underline font-medium">
           scouting@team11010.com
         </a>
       </p>

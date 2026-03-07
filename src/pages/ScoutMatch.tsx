@@ -259,7 +259,6 @@ const ScoutMatch = () => {
               ]}
               onChange={(v) => updateField("climbResult", v)}
             />
-            <ToggleControl label={t("scout.parkedOnly")} value={matchData.parkedOnly} onChange={(v) => updateField("parkedOnly", v)} />
           </div>
         </section>
 

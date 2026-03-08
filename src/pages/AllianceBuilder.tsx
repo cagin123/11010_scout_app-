@@ -56,11 +56,9 @@ const AllianceBuilder = () => {
     });
 
     return Array.from(teamMap.entries()).map(([teamNumber, entries]) => {
-      const avgAutoHigh = entries.reduce((s, e) => s + e.auto_fuel_high, 0) / entries.length;
-      const avgAutoLow = entries.reduce((s, e) => s + e.auto_fuel_low, 0) / entries.length;
-      const avgTeleopHigh = entries.reduce((s, e) => s + e.teleop_fuel_high, 0) / entries.length;
-      const avgTeleopLow = entries.reduce((s, e) => s + e.teleop_fuel_low, 0) / entries.length;
-      const avgTotal = avgAutoHigh + avgAutoLow + avgTeleopHigh + avgTeleopLow;
+      const avgAutoTotal = entries.reduce((s, e) => s + (e.auto_fuel_total || 0) + (e.cycles_completed || 0), 0) / entries.length;
+      const avgTeleopTotal = entries.reduce((s, e) => s + (e.teleop_fuel_total || 0), 0) / entries.length;
+      const avgTotal = avgAutoTotal + avgTeleopTotal;
 
       const climbCount = entries.filter((e) => e.climb_result !== "none").length;
       const climbPct = Math.round((climbCount / entries.length) * 100);
@@ -68,7 +66,7 @@ const AllianceBuilder = () => {
       const issueCount = entries.filter((e) => e.broke_down || e.tipped_over || e.lost_comms).length;
       const reliability = Math.round(((entries.length - issueCount) / entries.length) * 100);
 
-      const autoStrength = avgAutoHigh >= 3 ? "high" : avgAutoHigh >= 1 ? "mid" : "low";
+      const autoStrength = avgAutoTotal >= 6 ? "high" : avgAutoTotal >= 3 ? "mid" : "low";
 
       return { teamNumber, avgTotal, climbPct, reliability, autoStrength, matchCount: entries.length };
     });

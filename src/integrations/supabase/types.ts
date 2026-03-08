@@ -18,8 +18,7 @@ export type Database = {
         Row: {
           alliance: string
           auto_climb_attempted: boolean
-          auto_fuel_high: number
-          auto_fuel_low: number
+          auto_fuel_total: number
           broke_down: boolean
           climb_result: string
           created_at: string
@@ -37,16 +36,14 @@ export type Database = {
           scouted_by: string
           scouted_by_team: string
           team_number: string
-          teleop_fuel_high: number
-          teleop_fuel_low: number
+          teleop_fuel_total: number
           tipped_over: boolean
           used_trench_well: boolean
         }
         Insert: {
           alliance: string
           auto_climb_attempted?: boolean
-          auto_fuel_high?: number
-          auto_fuel_low?: number
+          auto_fuel_total?: number
           broke_down?: boolean
           climb_result?: string
           created_at?: string
@@ -64,16 +61,14 @@ export type Database = {
           scouted_by: string
           scouted_by_team?: string
           team_number: string
-          teleop_fuel_high?: number
-          teleop_fuel_low?: number
+          teleop_fuel_total?: number
           tipped_over?: boolean
           used_trench_well?: boolean
         }
         Update: {
           alliance?: string
           auto_climb_attempted?: boolean
-          auto_fuel_high?: number
-          auto_fuel_low?: number
+          auto_fuel_total?: number
           broke_down?: boolean
           climb_result?: string
           created_at?: string
@@ -91,8 +86,7 @@ export type Database = {
           scouted_by?: string
           scouted_by_team?: string
           team_number?: string
-          teleop_fuel_high?: number
-          teleop_fuel_low?: number
+          teleop_fuel_total?: number
           tipped_over?: boolean
           used_trench_well?: boolean
         }

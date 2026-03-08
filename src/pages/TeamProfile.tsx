@@ -52,8 +52,10 @@ const TeamProfile = () => {
   const stats = useMemo(() => {
     if (entries.length === 0) return null;
     const n = entries.length;
-    const avgAuto = entries.reduce((s, m) => s + (m.auto_fuel_high * 2 + m.auto_fuel_low), 0) / n;
-    const avgTeleop = entries.reduce((s, m) => s + (m.teleop_fuel_high * 2 + m.teleop_fuel_low) + m.cycles_completed, 0) / n;
+    // Auto: total auto fuel + cycles
+    const avgAuto = entries.reduce((s, m) => s + (m.auto_fuel_total || 0) + (m.cycles_completed || 0), 0) / n;
+    // Teleop: only teleop fuel
+    const avgTeleop = entries.reduce((s, m) => s + (m.teleop_fuel_total || 0), 0) / n;
     const avgTotal = avgAuto + avgTeleop;
     const climbPct = (entries.filter((m) => ["success", "high", "mid", "low"].includes(m.climb_result)).length / n) * 100;
     const reliability = ((n - entries.filter((m) => m.broke_down || m.lost_comms || m.tipped_over).length) / n) * 100;
@@ -63,12 +65,12 @@ const TeamProfile = () => {
     const sorted = [...entries].sort((a, b) => a.match_number - b.match_number);
     const last5 = sorted.slice(-5).map((m) => ({
       match: `Q${m.match_number}`,
-      auto: m.auto_fuel_high * 2 + m.auto_fuel_low,
-      teleop: (m.teleop_fuel_high * 2 + m.teleop_fuel_low) + m.cycles_completed,
+      auto: (m.auto_fuel_total || 0) + (m.cycles_completed || 0),
+      teleop: m.teleop_fuel_total || 0,
     }));
 
-    const totalAuto = entries.reduce((s, m) => s + (m.auto_fuel_high * 2 + m.auto_fuel_low), 0);
-    const totalTeleop = entries.reduce((s, m) => s + (m.teleop_fuel_high * 2 + m.teleop_fuel_low) + m.cycles_completed, 0);
+    const totalAuto = entries.reduce((s, m) => s + (m.auto_fuel_total || 0) + (m.cycles_completed || 0), 0);
+    const totalTeleop = entries.reduce((s, m) => s + (m.teleop_fuel_total || 0), 0);
     const totalAll = totalAuto + totalTeleop || 1;
     const autoPct = Math.round((totalAuto / totalAll) * 100);
     const teleopPct = 100 - autoPct;

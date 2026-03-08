@@ -31,12 +31,10 @@ interface MatchData {
   matchNumber: string;
   teamNumber: string;
   alliance: "red" | "blue";
-  autoFuelHigh: number;
-  autoFuelLow: number;
+  autoFuelTotal: number;
   leftStartingZone: boolean;
   autoClimbAttempted: boolean;
-  teleopFuelHigh: number;
-  teleopFuelLow: number;
+  teleopFuelTotal: number;
   cyclesCompleted: number;
   defense: "none" | "light" | "heavy";
   effectiveOverBumps: boolean;
@@ -54,12 +52,10 @@ const initialMatchData: MatchData = {
   matchNumber: "",
   teamNumber: "",
   alliance: "red",
-  autoFuelHigh: 0,
-  autoFuelLow: 0,
+  autoFuelTotal: 0,
   leftStartingZone: false,
   autoClimbAttempted: false,
-  teleopFuelHigh: 0,
-  teleopFuelLow: 0,
+  teleopFuelTotal: 0,
   cyclesCompleted: 0,
   defense: "none",
   effectiveOverBumps: false,
@@ -126,12 +122,10 @@ const ScoutMatch = () => {
       match_number: parseInt(matchData.matchNumber),
       team_number: matchData.teamNumber,
       alliance: matchData.alliance,
-      auto_fuel_high: matchData.autoFuelHigh,
-      auto_fuel_low: matchData.autoFuelLow,
+      auto_fuel_total: matchData.autoFuelTotal,
       left_starting_zone: matchData.leftStartingZone,
       auto_climb_attempted: matchData.autoClimbAttempted,
-      teleop_fuel_high: matchData.teleopFuelHigh,
-      teleop_fuel_low: matchData.teleopFuelLow,
+      teleop_fuel_total: matchData.teleopFuelTotal,
       cycles_completed: matchData.cyclesCompleted,
       defense: matchData.defense,
       effective_over_bumps: matchData.effectiveOverBumps,
@@ -207,8 +201,7 @@ const ScoutMatch = () => {
             <span>{t("scout.autonomous")}</span>
           </div>
           <div className="card-data p-4 space-y-4">
-            <CounterControl label={t("scout.autoFuelHigh")} value={matchData.autoFuelHigh} onChange={(v) => updateField("autoFuelHigh", v)} />
-            <CounterControl label={t("scout.autoFuelLow")} value={matchData.autoFuelLow} onChange={(v) => updateField("autoFuelLow", v)} />
+            <CounterControl label={t("scout.autoFuelTotal")} value={matchData.autoFuelTotal} onChange={(v) => updateField("autoFuelTotal", v)} />
             <div className="grid grid-cols-1 gap-2 pt-2">
               <ToggleControl label={t("scout.leftStartingZone")} value={matchData.leftStartingZone} onChange={(v) => updateField("leftStartingZone", v)} />
               <ToggleControl label={t("scout.autoClimbAttempted")} value={matchData.autoClimbAttempted} onChange={(v) => updateField("autoClimbAttempted", v)} />
@@ -222,8 +215,7 @@ const ScoutMatch = () => {
             <span>{t("scout.teleop")}</span>
           </div>
           <div className="card-data p-4 space-y-4">
-            <CounterControl label={t("scout.teleopFuelHigh")} value={matchData.teleopFuelHigh} onChange={(v) => updateField("teleopFuelHigh", v)} />
-            <CounterControl label={t("scout.teleopFuelLow")} value={matchData.teleopFuelLow} onChange={(v) => updateField("teleopFuelLow", v)} />
+            <CounterControl label={t("scout.teleopFuelTotal")} value={matchData.teleopFuelTotal} onChange={(v) => updateField("teleopFuelTotal", v)} />
             <CounterControl label={t("scout.cyclesCompleted")} value={matchData.cyclesCompleted} onChange={(v) => updateField("cyclesCompleted", v)} />
             <SegmentedControl
               label={t("scout.defense")}

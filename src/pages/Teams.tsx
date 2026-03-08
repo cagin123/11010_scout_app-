@@ -63,8 +63,10 @@ const Teams = () => {
 
     return Object.entries(grouped).map(([teamNumber, matches]) => {
       const n = matches.length;
-      const avgAuto = matches.reduce((s, m) => s + (m.auto_fuel_high * 2 + m.auto_fuel_low), 0) / n;
-      const avgTeleop = matches.reduce((s, m) => s + (m.teleop_fuel_high * 2 + m.teleop_fuel_low) + m.cycles_completed, 0) / n;
+      // Auto: total auto fuel + cycles
+      const avgAuto = matches.reduce((s, m) => s + (m.auto_fuel_total || 0) + (m.cycles_completed || 0), 0) / n;
+      // Teleop: only teleop fuel
+      const avgTeleop = matches.reduce((s, m) => s + (m.teleop_fuel_total || 0), 0) / n;
       const climbPct = (matches.filter((m) => m.climb_result === "success" || m.climb_result === "high" || m.climb_result === "mid" || m.climb_result === "low").length / n) * 100;
       const reliability = ((n - matches.filter((m) => m.broke_down || m.lost_comms || m.tipped_over).length) / n) * 100;
       const defense = matches.reduce((s, m) => s + (DEFENSE_MAP[m.defense] || 1), 0) / n;

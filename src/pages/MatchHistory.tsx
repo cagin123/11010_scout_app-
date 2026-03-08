@@ -20,10 +20,8 @@ interface MatchEntry {
   team_number: string;
   alliance: string;
   scouted_by: string;
-  auto_fuel_high: number;
-  auto_fuel_low: number;
-  teleop_fuel_high: number;
-  teleop_fuel_low: number;
+  auto_fuel_total: number;
+  teleop_fuel_total: number;
   left_starting_zone: boolean;
   climb_result: string;
   defense: string;
@@ -99,10 +97,10 @@ const MatchHistory = () => {
 
   const exportCSV = () => {
     if (entries.length === 0) return;
-    const headers = ["Match", "Team", "Alliance", "Auto High", "Auto Low", "Teleop High", "Teleop Low", "Cycles", "Climb", "Defense", "Driver Skill", "Broke Down", "Tipped", "Lost Comms", "Notes", "Scouted By"];
+    const headers = ["Match", "Team", "Alliance", "Auto Fuel", "Teleop Fuel", "Cycles", "Climb", "Defense", "Driver Skill", "Broke Down", "Tipped", "Lost Comms", "Notes", "Scouted By"];
     const rows = entries.map((e) => [
-      e.match_number, e.team_number, e.alliance, e.auto_fuel_high, e.auto_fuel_low,
-      e.teleop_fuel_high, e.teleop_fuel_low, e.cycles_completed, e.climb_result,
+      e.match_number, e.team_number, e.alliance, e.auto_fuel_total, e.teleop_fuel_total,
+      e.cycles_completed, e.climb_result,
       e.defense, e.driver_skill_rating, e.broke_down, e.tipped_over, e.lost_comms,
       `"${(e.notes || "").replace(/"/g, '""')}"`, e.scouted_by,
     ]);
@@ -137,11 +135,13 @@ const MatchHistory = () => {
     const matchNumbers = [...new Set(entries.map(e => e.match_number))].sort((a, b) => a - b);
     const matchAutoAvg = matchNumbers.map(mn => {
       const me = entries.filter(e => e.match_number === mn);
-      return me.reduce((s, e) => s + e.auto_fuel_high + e.auto_fuel_low, 0) / me.length;
+      // Auto: total auto fuel + cycles
+      return me.reduce((s, e) => s + (e.auto_fuel_total || 0) + (e.cycles_completed || 0), 0) / me.length;
     });
     const matchTeleopAvg = matchNumbers.map(mn => {
       const me = entries.filter(e => e.match_number === mn);
-      return me.reduce((s, e) => s + e.teleop_fuel_high + e.teleop_fuel_low, 0) / me.length;
+      // Teleop: only teleop fuel
+      return me.reduce((s, e) => s + (e.teleop_fuel_total || 0), 0) / me.length;
     });
 
     const chart1X = 14;
@@ -243,10 +243,10 @@ const MatchHistory = () => {
     // === DATA TABLE ===
     autoTable(doc, {
       startY: chartY + chartH + 18,
-      head: [["Match", "Team", "Alliance", "Auto H", "Auto L", "Teleop H", "Teleop L", "Cycles", "Climb", "Defense", "Driver", "Issues", "Scout"]],
+      head: [["Match", "Team", "Alliance", "Auto Fuel", "Teleop Fuel", "Cycles", "Climb", "Defense", "Driver", "Issues", "Scout"]],
       body: entries.map((e) => {
         const issues = [e.broke_down && "BD", e.tipped_over && "TIP", e.lost_comms && "LC"].filter(Boolean).join(", ") || "—";
-        return [e.match_number, e.team_number, e.alliance, e.auto_fuel_high, e.auto_fuel_low, e.teleop_fuel_high, e.teleop_fuel_low, e.cycles_completed, e.climb_result, e.defense, e.driver_skill_rating, issues, e.scouted_by];
+        return [e.match_number, e.team_number, e.alliance, e.auto_fuel_total, e.teleop_fuel_total, e.cycles_completed, e.climb_result, e.defense, e.driver_skill_rating, issues, e.scouted_by];
       }),
       styles: { fontSize: 8 },
       headStyles: { fillColor: [30, 30, 30] },
@@ -516,8 +516,8 @@ const AllianceSection = ({ alliance, entries, isExpanded, onToggle, isAdmin, onD
                   </div>
 
                   <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-xs">
-                    <StatBox label={t("history.auto")} value={entry.auto_fuel_high + entry.auto_fuel_low} />
-                    <StatBox label={t("history.teleop")} value={entry.teleop_fuel_high + entry.teleop_fuel_low} />
+                    <StatBox label={t("history.auto")} value={entry.auto_fuel_total} />
+                    <StatBox label={t("history.teleop")} value={entry.teleop_fuel_total} />
                     <StatBox label={t("history.cycles")} value={entry.cycles_completed} />
                     <StatBox
                       label={t("history.climb")}

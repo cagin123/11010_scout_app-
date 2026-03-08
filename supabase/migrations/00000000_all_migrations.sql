@@ -50,7 +50,6 @@ $$;
 -- Admins can read all roles
 CREATE POLICY "Admins can read all roles" ON public.user_roles FOR SELECT TO authenticated USING (public.has_role(auth.uid(), 'admin'));
 
--- Match entries table
 CREATE TABLE public.match_entries (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   scouted_by UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -58,13 +57,11 @@ CREATE TABLE public.match_entries (
   team_number TEXT NOT NULL,
   alliance TEXT NOT NULL CHECK (alliance IN ('red', 'blue')),
   -- Autonomous
-  auto_fuel_high INT NOT NULL DEFAULT 0,
-  auto_fuel_low INT NOT NULL DEFAULT 0,
+  auto_fuel_total INT NOT NULL DEFAULT 0,
   left_starting_zone BOOLEAN NOT NULL DEFAULT false,
   auto_climb_attempted BOOLEAN NOT NULL DEFAULT false,
   -- Teleop
-  teleop_fuel_high INT NOT NULL DEFAULT 0,
-  teleop_fuel_low INT NOT NULL DEFAULT 0,
+  teleop_fuel_total INT NOT NULL DEFAULT 0,
   cycles_completed INT NOT NULL DEFAULT 0,
   defense TEXT NOT NULL DEFAULT 'none' CHECK (defense IN ('none', 'light', 'heavy')),
   effective_over_bumps BOOLEAN NOT NULL DEFAULT false,

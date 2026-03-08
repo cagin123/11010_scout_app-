@@ -12,11 +12,10 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserRound } from "lucide-react";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { user, signIn, signInAsGuest } = useAuth();
+  const { user, signIn } = useAuth();
   const { language, setLanguage, t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -211,18 +210,6 @@ const SignIn = () => {
             {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("signIn.button")}
           </Button>
 
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full h-11"
-            onClick={() => {
-              signInAsGuest();
-              navigate("/teams");
-            }}
-          >
-            <UserRound className="w-4 h-4 mr-2" />
-            {t("signIn.guestButton")}
-          </Button>
         </form>
       </motion.div>
 

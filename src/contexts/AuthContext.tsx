@@ -11,10 +11,8 @@ interface UserProfile {
 interface AuthContextType {
   user: UserProfile | null;
   isAdmin: boolean;
-  isGuest: boolean;
   isLoading: boolean;
   signIn: (teamNumber: string, username: string, password: string) => Promise<{ error: string | null }>;
-  signInAsGuest: () => void;
   signOut: () => void;
 }
 
@@ -22,20 +20,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
-  const [isGuest, setIsGuest] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const stored = localStorage.getItem("bobcats_user");
-    const guestStored = localStorage.getItem("bobcats_guest");
     if (stored) {
       try {
         setUser(JSON.parse(stored));
       } catch {
         localStorage.removeItem("bobcats_user");
       }
-    } else if (guestStored === "true") {
-      setIsGuest(true);
     }
     setIsLoading(false);
   }, []);
@@ -68,16 +62,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signInAsGuest = () => {
-    setIsGuest(true);
-    localStorage.setItem("bobcats_guest", "true");
-  };
-
   const signOut = () => {
     setUser(null);
-    setIsGuest(false);
     localStorage.removeItem("bobcats_user");
-    localStorage.removeItem("bobcats_guest");
   };
 
   return (
@@ -85,10 +72,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         isAdmin: user?.role === "admin",
-        isGuest,
         isLoading,
         signIn,
-        signInAsGuest,
         signOut,
       }}
     >

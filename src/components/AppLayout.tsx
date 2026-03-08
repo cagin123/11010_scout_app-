@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { ClipboardList, Users, LogOut, Menu, X, Shield, History, Globe, Handshake, MapPin, LogIn } from "lucide-react";
+import { ClipboardList, Users, LogOut, Menu, X, Shield, History, Globe, Handshake, MapPin } from "lucide-react";
 import bobcatsLogo from "@/assets/bobcats-logo.png";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -16,13 +16,13 @@ interface AppLayoutProps {
 const AppLayout = ({ children }: AppLayoutProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [regionalMenuOpen, setRegionalMenuOpen] = useState(false);
-  const { signOut, isAdmin, user, isGuest } = useAuth();
+  const { signOut, isAdmin, user } = useAuth();
   const { language, setLanguage, t } = useLanguage();
   const { regional, setRegional, regionals } = useRegional();
   
 
   const navItems = [
-    ...(!isGuest ? [{ to: "/scout", icon: ClipboardList, label: t("nav.scout") }] : []),
+    { to: "/scout", icon: ClipboardList, label: t("nav.scout") },
     { to: "/history", icon: History, label: t("nav.history") },
     { to: "/teams", icon: Users, label: t("nav.teams") },
     { to: "/alliance", icon: Handshake, label: t("nav.alliance") },
@@ -31,10 +31,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   const handleSignOut = () => {
     signOut();
-    window.location.href = "/signin";
-  };
-
-  const handleSignIn = () => {
     window.location.href = "/signin";
   };
 
@@ -95,8 +91,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           </button>
           <button
             className="flex items-center justify-center w-10 h-10 rounded-xl text-muted-foreground hover:text-foreground hover:bg-card-elevated hover:scale-110 active:scale-95 transition-all duration-200"
-            title={isGuest ? t("signIn.button") : t("nav.signOut")}
-            onClick={isGuest ? handleSignIn : handleSignOut}
+            title={t("nav.signOut")}
+            onClick={handleSignOut}
           >
             <LogOut className="w-5 h-5" />
           </button>
@@ -224,10 +220,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: navItems.length * 0.04 }}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-card-elevated transition-all duration-200 mt-2 pt-3 active:scale-[0.97]"
-                onClick={isGuest ? handleSignIn : handleSignOut}
+                onClick={handleSignOut}
               >
                 <LogOut className="w-5 h-5" />
-                <span className="font-medium">{isGuest ? t("signIn.button") : t("nav.signOut")}</span>
+                <span className="font-medium">{t("nav.signOut")}</span>
               </motion.button>
             </nav>
           </motion.div>
@@ -257,12 +253,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
       {/* Main Content */}
       <main className="lg:pl-16 pt-14 lg:pt-0 pb-20 lg:pb-0 min-h-screen">
-        {isGuest && (
-          <div className="bg-primary-muted text-primary text-xs text-center py-2 px-4 flex items-center justify-center gap-2">
-            <LogIn className="w-3.5 h-3.5" />
-            {t("guest.readOnly")}
-          </div>
-        )}
         {children}
       </main>
 

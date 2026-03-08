@@ -303,9 +303,6 @@ Email: hasalrobotics@gmail.com`,
     "admin.resetTutorial": "Reset Tutorial",
     "admin.tutorialReset": "Tutorial will show on next page load",
 
-    // Guest
-    "signIn.guestButton": "Continue as Guest",
-    "guest.readOnly": "You are in guest mode. Sign in to scout matches.",
 
     // Not Found
     "notFound.title": "404",
@@ -604,9 +601,6 @@ E-posta: hasalrobotics@gmail.com`,
     "admin.resetTutorial": "Tutorial'ı Sıfırla",
     "admin.tutorialReset": "Tutorial bir sonraki sayfa yüklemesinde gösterilecek",
 
-    // Guest
-    "signIn.guestButton": "Misafir Olarak Devam Et",
-    "guest.readOnly": "Misafir modundasınız. Maç scout etmek için giriş yapın.",
 
     // Not Found
     "notFound.title": "404",

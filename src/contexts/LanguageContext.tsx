@@ -94,9 +94,7 @@ The Application may collect:
 • Team numbers and performance statistics
 • Basic device or usage information required for functionality
 
-Data may be stored:
-• Locally on your device
-• On shared team storage (if enabled)
+We use a database to store scouting data. Data may also be stored locally on your device as required for the application to function.
 
 Team 11010 Bobcats does not sell or commercially distribute user data.
 
@@ -392,9 +390,7 @@ Uygulama şunları toplayabilir:
 • Takım numaraları ve performans istatistikleri
 • İşlevsellik için gerekli temel cihaz veya kullanım bilgileri
 
-Veriler şu şekilde depolanabilir:
-• Cihazınızda yerel olarak
-• Paylaşılan takım depolamasında (etkinleştirilmişse)
+Scouting verilerini saklamak için bir veritabanı kullanıyoruz. Veriler, uygulamanın çalışması için gerekli olduğunda cihazınızda yerel olarak da saklanabilir.
 
 Takım 11010 Bobcats kullanıcı verilerini satmaz veya ticari olarak dağıtmaz.
 

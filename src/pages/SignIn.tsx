@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,7 @@ import { UserRound } from "lucide-react";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { signIn, signInAsGuest } = useAuth();
+  const { user, signIn, signInAsGuest } = useAuth();
   const { language, setLanguage, t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +28,34 @@ const SignIn = () => {
     password: "",
   });
 
+  // Load persisted agreement + last used credentials
+  useEffect(() => {
+    const agreedStored = localStorage.getItem("bobcats_agreed");
+    if (agreedStored === "true") {
+      setAgreed(true);
+    }
+    const lastLoginRaw = localStorage.getItem("bobcats_last_login");
+    if (lastLoginRaw) {
+      try {
+        const last = JSON.parse(lastLoginRaw) as { teamNumber?: string; username?: string };
+        setFormData((prev) => ({
+          ...prev,
+          teamNumber: last.teamNumber || "",
+          username: last.username || "",
+        }));
+      } catch {
+        localStorage.removeItem("bobcats_last_login");
+      }
+    }
+  }, []);
+
+  // If already signed in, skip the sign-in page
+  useEffect(() => {
+    if (user) {
+      navigate("/scout");
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -38,6 +66,11 @@ const SignIn = () => {
       toast.error(error);
       setIsLoading(false);
     } else {
+      // Persist last used team + username so form can be prefilled next time
+      localStorage.setItem(
+        "bobcats_last_login",
+        JSON.stringify({ teamNumber: formData.teamNumber, username: formData.username })
+      );
       toast.success(language === "en" ? "Signed in successfully!" : "Giriş başarılı!");
       navigate("/scout");
     }
@@ -147,7 +180,15 @@ const SignIn = () => {
             <Checkbox
               id="agreement"
               checked={agreed}
-              onCheckedChange={(checked) => setAgreed(checked === true)}
+              onCheckedChange={(checked) => {
+                const value = checked === true;
+                setAgreed(value);
+                if (value) {
+                  localStorage.setItem("bobcats_agreed", "true");
+                } else {
+                  localStorage.removeItem("bobcats_agreed");
+                }
+              }}
               className="mt-0.5"
             />
             <label htmlFor="agreement" className="text-xs text-muted-foreground leading-tight cursor-pointer">
